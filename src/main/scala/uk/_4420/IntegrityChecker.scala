@@ -40,7 +40,10 @@ class IntegrityChecker(apiRoot: String, timeout: FiniteDuration)(
   def metadataIndicatesFileHasIntegrity(metadata: MetadataJson, file: File): Boolean = {
     metadata.files.filter(_.name == file.getName) match {
       case Seq() => false
-      case Seq(fileMetadata) => fileMetadata.size == file.length && md5(file) == fileMetadata.md5 && sha1(file) == fileMetadata.sha1
+      case Seq(fileMetadata) =>
+        fileMetadata.size.map(_.toLong).forall(_ == file.length) &&
+          fileMetadata.md5.forall(_ == md5(file)) &&
+          fileMetadata.sha1.forall(_ == sha1(file))
       case seq => throw new Exception(s"file appears ${seq.length} times in metadata response (expected once)")
     }
   }

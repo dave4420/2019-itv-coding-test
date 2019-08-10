@@ -14,9 +14,9 @@ object MetadataJson {
 
 case class MetadataFileJson(
     name: String,
-    size: Long,
-    md5: String,
-    sha1: String,
+    size: Option[String], // it's a string in the JSON, even though it should be a number
+    md5: Option[String],
+    sha1: Option[String],
 )
 
 object MetadataFileJson {
