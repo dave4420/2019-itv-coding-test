@@ -2,12 +2,15 @@ package uk._4420
 
 import java.io.File
 
+import scala.concurrent.duration._
+
 case class Config(
     internetArchiveMetadataApiRoot: String,
     ffmpegExecutableName: String,
     inputVideoFile: File,
     outputThumbnailFile: File,
     mediaId: MediaId,
+    timeout: FiniteDuration,
 )
 
 object Config {
@@ -19,6 +22,7 @@ object Config {
         inputVideoFile = new File(inputVideoFile),
         outputThumbnailFile = new File(outputThumbnailFile),
         mediaId = MediaId(mediaId),
+        timeout = 10.seconds,
       )
   }
 }
