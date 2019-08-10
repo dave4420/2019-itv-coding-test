@@ -11,11 +11,16 @@ object Main {
     implicit val system = ActorSystem("itv")
     implicit val materializer = ActorMaterializer()
     implicit val executionContext = system.dispatcher
-    val program = new Main(
-      integrityChecker = new IntegrityChecker(config.internetArchiveMetadataApiRoot, config.timeout),
-      thumbnailGenerator = new ThumbnailGenerator(config.ffmpegExecutableName),
-    )
-    program.run(config.inputVideoFile, config.outputThumbnailFile, config.mediaId)
+    try {
+      val program = new Main(
+        integrityChecker = new IntegrityChecker(config.internetArchiveMetadataApiRoot, config.timeout),
+        thumbnailGenerator = new ThumbnailGenerator(config.ffmpegExecutableName),
+      )
+      program.run(config.inputVideoFile, config.outputThumbnailFile, config.mediaId)
+    }
+    finally {
+      system.terminate()
+    }
   }
 }
 
