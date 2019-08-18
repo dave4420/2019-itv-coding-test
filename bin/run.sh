@@ -1,6 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 IFS=$'\n\t'
+# Unofficial bash strict mode <http://redsymbol.net/articles/unofficial-bash-strict-mode/>
 
 dir="$(dirname "$0")"
 
