@@ -8,7 +8,7 @@ import uk._4420.ThumbnailGenerator._
 import scala.sys.process._
 
 class ThumbnailGenerator(ffmpegExecutableName: String) {
-  def generateThumbnail(inputVideoFile: File, outputThumbnailFile: File, offset: Duration): Unit = {
+  def generateThumbnail(inputVideoFile: File, outputThumbnailFile: File, offset: Duration): Boolean = {
     Seq(
       ffmpegExecutableName,
       "-i", inputVideoFile.getPath,
@@ -17,7 +17,7 @@ class ThumbnailGenerator(ffmpegExecutableName: String) {
       // -s 400x222 output size
       "-ss", secondsAsString(offset), // offset into video to grab thumbnail from (seconds)
       outputThumbnailFile.getPath,
-    ).!
+    ).! == 0
   }
 }
 

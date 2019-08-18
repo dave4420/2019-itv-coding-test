@@ -28,7 +28,11 @@ object Main {
 class Main(integrityChecker: IntegrityChecker, thumbnailGenerator: ThumbnailGenerator) {
   def run(inputVideoFile: File, outputThumbnailFile: File, id: MediaId, thumbnailOffset: Duration): Unit = {
     if (integrityChecker.hasIntegrity(inputVideoFile, id)) {
-      thumbnailGenerator.generateThumbnail(inputVideoFile, outputThumbnailFile, thumbnailOffset)
+      val ok = thumbnailGenerator.generateThumbnail(inputVideoFile, outputThumbnailFile, thumbnailOffset)
+      if (!ok) {
+        Console.err.println(s"Failed to generate thumbnail")
+        System.exit(1)
+      }
     }
     else {
       Console.err.println(s"$inputVideoFile is corrupt")
