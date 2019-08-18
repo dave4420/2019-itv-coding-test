@@ -1,6 +1,7 @@
 package uk._4420
 
 import java.io.File
+import java.time.Duration
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
@@ -16,7 +17,7 @@ object Main {
         integrityChecker = new IntegrityChecker(config.internetArchiveMetadataApiRoot, config.timeout),
         thumbnailGenerator = new ThumbnailGenerator(config.ffmpegExecutableName),
       )
-      program.run(config.inputVideoFile, config.outputThumbnailFile, config.mediaId)
+      program.run(config.inputVideoFile, config.outputThumbnailFile, config.mediaId, config.thumbnailOffset)
     }
     finally {
       system.terminate()
@@ -25,9 +26,9 @@ object Main {
 }
 
 class Main(integrityChecker: IntegrityChecker, thumbnailGenerator: ThumbnailGenerator) {
-  def run(inputVideoFile: File, outputThumbnailFile: File, id: MediaId): Unit = {
+  def run(inputVideoFile: File, outputThumbnailFile: File, id: MediaId, thumbnailOffset: Duration): Unit = {
     if (integrityChecker.hasIntegrity(inputVideoFile, id)) {
-      thumbnailGenerator.generateThumbnail(inputVideoFile, outputThumbnailFile)
+      thumbnailGenerator.generateThumbnail(inputVideoFile, outputThumbnailFile, thumbnailOffset)
     }
     else {
       Console.err.println(s"$inputVideoFile is corrupt")
