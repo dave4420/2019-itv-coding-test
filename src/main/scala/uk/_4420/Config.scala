@@ -16,7 +16,8 @@ case class Config(
 )
 
 object Config {
-  def fromArgsOrThrow(args: Array[String]): Config = args match { // DAVE: add tests, use proper option parsing lib
+  //TODO if we add any options: use a proper option parsing library
+  def fromArgsOrThrow(args: Array[String]): Config = args match {
     case Array(inputVideoFile, outputThumbnailFile, mediaId, thumbnailOffset) =>
       Config(
         internetArchiveMetadataApiRoot = "https://archive.org/metadata",
